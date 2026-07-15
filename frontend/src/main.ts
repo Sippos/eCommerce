@@ -3,6 +3,8 @@ import { getProducts } from "./api/products"
 import type { Product } from "./types/Product"
 
 let allProducts: Product[] = []
+let selectedCategory ="all"
+let searchTerm = ""
 
 function createProductCard(product: Product): string {
   return `
@@ -68,7 +70,8 @@ function setupCategoryFilter(): void {
   }
 
   categoryFilter.addEventListener("change", () => {
-    const selectedCategory = categoryFilter.value;
+    selectedCategory = categoryFilter.value;
+    applyFilters()
 
     if (selectedCategory === "all") {
       renderProducts(allProducts);
@@ -83,14 +86,45 @@ function setupCategoryFilter(): void {
   });
 }
 
+function applyFilters(): void {
+  const filteredProducts = allProducts.filter((product) => {
+    const matchesCategory =
+      selectedCategory === "all" ||
+      product.category === selectedCategory;
+
+    const matchesSearch = product.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
+
+  renderProducts(filteredProducts);
+}
+
+function setupProductSearch(): void {
+  const searchInput =
+    document.querySelector<HTMLInputElement>("#product-search");
+
+  if (!searchInput) {
+    throw new Error("Product search input was not found");
+  }
+
+  searchInput.addEventListener("input", () => {
+    searchTerm = searchInput.value.trim();
+    applyFilters();
+  });
+}
 
 async function initializeApp(): Promise<void> {
   try {
-    const allProducts = await getProducts()
+    allProducts = await getProducts()
 
     renderCategoryOptions(allProducts)
     renderProducts(allProducts)
+
     setupCategoryFilter()
+    setupProductSearch()
   } catch (error) {
     console.error("Could not initialize the store:", error)
   }

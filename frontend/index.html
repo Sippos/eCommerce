@@ -5,16 +5,22 @@
   </header>
 
   <main>
-    <section id="product-list">
-      <p>Loading products...</p>
-    </section>
-
     <section class="filters">
       <label for="category-filter">Category:</label>
+      <label for="product-search">Search:</label>
+      <input
+        id="product-search"
+        type="search"
+        placeholder="Search products..."
+      />
 
       <select id="category-filter">
         <option value="all">All categories</option>
       </select>
+    </section>
+
+    <section id="product-list">
+      <p>Loading products...</p>
     </section>
   </main>
 
