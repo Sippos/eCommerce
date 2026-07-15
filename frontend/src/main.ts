@@ -30,6 +30,11 @@ function renderProducts(products: Product[]): void {
     throw new Error("Product list element was not found")
   }
 
+  if (products.length === 0) {
+    productList.innerHTML = "<p>No products found.</p>"
+    return
+  }
+
   productList.innerHTML = products
     .map((product) => createProductCard(product))
     .join("")
