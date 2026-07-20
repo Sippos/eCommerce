@@ -10,7 +10,8 @@ export const categoryBodySchema = z.object({
 
 export const categoryIdParamsSchema = z.object({
     id: z.string().refine(
-        (value) => mongoose.Types.ObjectId.isValid(value), "In"
+        (value) => mongoose.Types.ObjectId.isValid(value), "Invalid category by ID"
     )
 })
+
 export type CategoryBody = z.infer<typeof categoryBodySchema>

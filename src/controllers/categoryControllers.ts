@@ -16,12 +16,12 @@ export async function getCategories(
 }
 
 export async function getCategoryById(
-    _request: Request,
+    request: Request,
     response: Response,
     next: NextFunction,
 ): Promise<void> {
     try {
-        const { id } = _request.params
+        const { id } = request.params
 
         const category = await Category.findById(id)
 
@@ -95,7 +95,7 @@ export async function deleteCategory(
 
     const deletedCategory = await Category.findByIdAndDelete(id)
 
-    if(!deleteCategory) {
+    if(!deletedCategory) {
         response.status(400).json({
             error: "Category not found"
         })
